@@ -20,15 +20,13 @@ int main() {
     vector<int> a;
     vector<int> b;
 
-    while (cin) {
-        int numberA = -1;
-        int numberB = -1;
-        cin >> numberA >> numberB;
+    int numberA;
+    int numberB;
+
+    while (cin >> numberA >> numberB) {
         a.push_back(numberA);
         b.push_back(numberB);
     }
-    a.pop_back();
-    b.pop_back();
     sort(a.begin(), a.end());
     sort(b.begin(), b.end());
 
