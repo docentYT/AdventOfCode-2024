@@ -13,58 +13,34 @@ bool check_if_xmas(int i, int j, int iIncrementator, int jIncrementator) {
            wordSearch[i + 3 * iIncrementator][j + 3 * jIncrementator] == 'S';
 }
 
-int find_horizontal() {
-    int sum = 0;
-    for (int i = 0; i < wordSearch.size(); i++) {
-        for (int j = 0; j < wordSearch[0].size(); j++) {
-            if ((j < wordSearch[0].size() - 3 &&
-                 check_if_xmas(i, j, 0, 1))) {  // right
-                sum++;
-            }
-            if (j >= 3 && check_if_xmas(i, j, 0, -1)) {  // left
-                sum++;
-            }
-        }
+void find_up_down(int& sum, int i, int j, int iIncrementator) {
+    if (check_if_xmas(i, j, iIncrementator, 0)) sum++;
+    if (j < wordSearch.size() - 3) {
+        if (check_if_xmas(i, j, iIncrementator, 1)) sum++;
     }
-    return sum;
+    if (j >= 3) {
+        if (check_if_xmas(i, j, iIncrementator, -1)) sum++;
+    }
 }
 
-int find_vertical() {
+int find() {
     int sum = 0;
     for (int i = 0; i < wordSearch.size(); i++) {
         for (int j = 0; j < wordSearch[0].size(); j++) {
-            if (i < wordSearch.size() - 3 && check_if_xmas(i, j, 1, 0)) { // down
-                sum++;
+            if (wordSearch[i][j] != 'X') {
+                continue;
             }
-            if (i >= 3 && check_if_xmas(i, j, -1, 0)) { // up
-                sum++;
+            if (i < wordSearch.size() - 3) {
+                find_up_down(sum, i, j, 1);
             }
-        }
-    }
-    return sum;
-}
-
-int find_diagonal() {
-    int sum = 0;
-    for (int i = 0; i < wordSearch.size(); i++) {
-        for (int j = 0; j < wordSearch[0].size(); j++) {
-            if (i < wordSearch.size() - 3) {  // down
-                if (j < wordSearch[0].size() - 3 &&
-                    check_if_xmas(i, j, 1, 1)) {  // right
-                    sum++;
-                }
-                if (j >= 3 && check_if_xmas(i, j, 1, -1)) {  // left
-                    sum++;
-                }
+            if (i >= 3) {
+                find_up_down(sum, i, j, -1);
             }
-            if (i >= 3) {  // up
-                if (j < wordSearch[0].size() - 3 &&
-                    check_if_xmas(i, j, -1, 1)) {  // right
-                    sum++;
-                }
-                if (j >= 3 && check_if_xmas(i, j, -1, -1)) {  // left
-                    sum++;
-                }
+            if (j < wordSearch.size() - 3) {
+                if (check_if_xmas(i, j, 0, 1)) sum++;
+            }
+            if (j >= 3) {
+                if (check_if_xmas(i, j, 0, -1)) sum++;
             }
         }
     }
@@ -99,7 +75,7 @@ int main() {
     }
 
     // Part One
-    int sum = find_horizontal() + find_vertical() + find_diagonal();
+    int sum = find();
     cout << sum << '\n';
 
     // Part Two
